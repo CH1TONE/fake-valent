@@ -1,0 +1,440 @@
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <title>Valentine Gift</title>
+    <style>
+      body {
+        min-height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #ffb6d5 0%, #ff69b4 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow-x: hidden;
+      }
+      .valentine-container {
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 32px;
+        box-shadow: 0 8px 32px rgba(255, 105, 180, 0.2);
+        padding: 2.5rem 2rem 2rem 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        max-width: 95vw;
+        width: 400px;
+      }
+      .valentine-question {
+        font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+        font-size: 2rem;
+        color: #d72660;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      .valentine-buttons {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        width: 100%;
+        justify-content: center;
+      }
+      .valentine-btn {
+        font-family: inherit;
+        font-size: 1.3rem;
+        padding: 0.8rem 2.2rem;
+        border: none;
+        border-radius: 2rem;
+        background: #ff69b4;
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(215, 38, 96, 0.15);
+        transition:
+          transform 0.2s,
+          background 0.2s,
+          box-shadow 0.2s;
+        position: relative;
+        z-index: 2;
+      }
+      .valentine-btn.yes {
+        z-index: 9999999;
+        background: #d72660;
+      }
+      .valentine-btn.no {
+        background: #ff69b4;
+      }
+      .valentine-btn.yes:hover,
+      .valentine-btn.yes:focus {
+        background: #e75480;
+      }
+      .valentine-btn.no:hover,
+      .valentine-btn.no:focus {
+        background: #d72660;
+      }
+      .valentine-kitten {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        margin-bottom: 1.2rem;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(255, 182, 213, 0.3);
+      }
+      .hearts {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .heart {
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        background: #ff69b4;
+        transform: rotate(-45deg);
+        border-radius: 50% 50% 0 0;
+        animation: floatHeart 4s infinite ease-in-out;
+      }
+      .heart:after,
+      .heart:before {
+        content: "";
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        background: #ff69b4;
+        border-radius: 50%;
+      }
+      .heart:before {
+        top: -14px;
+        left: 0;
+      }
+      .heart:after {
+        left: 14px;
+        top: 0;
+      }
+      @keyframes floatHeart {
+        0% {
+          transform: translateY(0) scale(1) rotate(-45deg);
+          opacity: 1;
+        }
+        80% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-80px) scale(1.2) rotate(-45deg);
+          opacity: 0;
+        }
+      }
+      @media (max-width: 600px) {
+        .valentine-container {
+          width: 98vw;
+          padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+        }
+        .valentine-question {
+          font-size: 1.2rem;
+        }
+        .valentine-kitten {
+          width: 56px;
+          object-fit: cover;
+          height: 56px;
+        }
+        .valentine-btn {
+          font-size: 1rem;
+          padding: 0.6rem 1.2rem;
+        }
+      }
+
+      /* Modal styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+      }
+
+      .modal-content {
+        background: linear-gradient(135deg, #ff69b4 0%, #d72660 100%);
+        margin: 10% auto;
+        padding: 2rem;
+        border-radius: 25px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(215, 38, 96, 0.3);
+        animation: modalSlideIn 0.5s ease-out;
+        position: relative;
+      }
+
+      .modal-title {
+        font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+        font-size: 2.5rem;
+        color: white;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal-message {
+        font-family: "Comic Sans MS", "Comic Sans", cursive, sans-serif;
+        font-size: 1.2rem;
+        color: white;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+      }
+
+      .modal-hearts {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .modal-heart {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.8);
+        transform: rotate(-45deg);
+        border-radius: 50% 50% 0 0;
+        animation: modalHeartFloat 3s infinite ease-in-out;
+      }
+
+      .modal-heart:after,
+      .modal-heart:before {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+      }
+
+      .modal-heart:before {
+        top: -10px;
+        left: 0;
+      }
+
+      .modal-heart:after {
+        left: 10px;
+        top: 0;
+      }
+
+      @keyframes modalSlideIn {
+        from {
+          transform: translateY(-50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes modalHeartFloat {
+        0% {
+          transform: translateY(0) scale(1) rotate(-45deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100px) scale(1.5) rotate(-45deg);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body></body>
+  <body>
+    <div class="valentine-container">
+      <img
+        class="valentine-kitten"
+        src="https://t4.ftcdn.net/jpg/11/29/75/29/360_F_1129752992_8hZ45gJ2hXiMwmlPcAdxgJz6AZyNmoiY.jpg"
+        alt="Cute kitten"
+      />
+      <div class="valentine-question">Will you be my Valentine?</div>
+      <div class="valentine-buttons">
+        <button class="valentine-btn yes">Yes</button>
+        <button class="valentine-btn no">No</button>
+      </div>
+      <div class="hearts">
+        <div
+          class="heart"
+          style="top: 10%; left: 10%; animation-delay: 0s"
+        ></div>
+        <div
+          class="heart"
+          style="top: 20%; left: 80%; animation-delay: 1s"
+        ></div>
+        <div
+          class="heart"
+          style="top: 70%; left: 20%; animation-delay: 2s"
+        ></div>
+        <div
+          class="heart"
+          style="top: 60%; left: 70%; animation-delay: 2.5s"
+        ></div>
+        <div
+          class="heart"
+          style="top: 40%; left: 50%; animation-delay: 1.5s"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Appreciation Modal -->
+    <div id="appreciationModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-hearts">
+          <div
+            class="modal-heart"
+            style="top: 10%; left: 15%; animation-delay: 0s"
+          ></div>
+          <div
+            class="modal-heart"
+            style="top: 20%; left: 75%; animation-delay: 0.5s"
+          ></div>
+          <div
+            class="modal-heart"
+            style="top: 60%; left: 20%; animation-delay: 1s"
+          ></div>
+          <div
+            class="modal-heart"
+            style="top: 70%; left: 80%; animation-delay: 1.5s"
+          ></div>
+        </div>
+        <div class="modal-title">💕 Yay! 💕</div>
+        <div class="modal-message">
+          Thank you for saying YES!<br />
+          You've made my day! 🥰<br />
+          <em>Happy Valentine's Day!</em>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // No button dodge logic
+      const noBtn = document.querySelector(".valentine-btn.no");
+      const btnsContainer = document.querySelector(".valentine-buttons");
+      const container = document.querySelector(".valentine-container");
+      let noBtnPosX = 0.5; // 0 (left) to 1 (right), relative
+      let noBtnPosY = 0.5; // 0 (top) to 1 (bottom), relative
+      const detectionRadius = 150; // Much larger detection radius
+
+      container.addEventListener("mousemove", (e) => {
+        const containerRect = container.getBoundingClientRect();
+        const noRect = noBtn.getBoundingClientRect();
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+
+        // Calculate button center in screen coordinates
+        const buttonCenterX = noRect.left + noRect.width / 2;
+        const buttonCenterY = noRect.top + noRect.height / 2;
+
+        // Calculate distance from mouse to button center
+        const distanceX = mouseX - buttonCenterX;
+        const distanceY = mouseY - buttonCenterY;
+        const distance = Math.sqrt(
+          distanceX * distanceX + distanceY * distanceY,
+        );
+
+        // If mouse is getting too close, move the button away
+        if (distance < detectionRadius) {
+          // Calculate escape direction (opposite of mouse direction)
+          const escapeX = -distanceX;
+          const escapeY = -distanceY;
+
+          // Normalize and amplify the escape vector
+          const escapeLength = Math.sqrt(escapeX * escapeX + escapeY * escapeY);
+          if (escapeLength > 0) {
+            const normalizedEscapeX = escapeX / escapeLength;
+            const normalizedEscapeY = escapeY / escapeLength;
+
+            // Move button based on escape direction
+            const moveStrength = 0.4; // How far to move
+            noBtnPosX += normalizedEscapeX * moveStrength;
+            noBtnPosY += normalizedEscapeY * moveStrength;
+
+            // Keep button within bounds
+            noBtnPosX = Math.max(0.1, Math.min(0.9, noBtnPosX));
+            noBtnPosY = Math.max(0.2, Math.min(0.8, noBtnPosY));
+          }
+
+          const translateX = (noBtnPosX - 0.5) * (containerRect.width * 0.7);
+          const translateY = (noBtnPosY - 0.5) * (containerRect.height * 0.5);
+          noBtn.style.transform = `translate(${translateX}px, ${translateY}px)`;
+          noBtn.style.transition = "transform 0.1s ease-out";
+        }
+      });
+
+      // Reset No button position on mouse leave container
+      container.addEventListener("mouseleave", () => {
+        noBtnPosX = 0.5;
+        noBtnPosY = 0.5;
+        noBtn.style.transform = "translate(0px, 0px)";
+        noBtn.style.transition = "transform 0.3s ease-in-out";
+      });
+
+      // No button click logic - move to random position when clicked
+      noBtn.addEventListener("click", (e) => {
+        e.preventDefault(); // Prevent any default action
+
+        // Generate random position
+        noBtnPosX = Math.random() * 0.8 + 0.1; // Random between 0.1 and 0.9
+        noBtnPosY = Math.random() * 0.6 + 0.2; // Random between 0.2 and 0.8
+
+        const containerRect = container.getBoundingClientRect();
+        const translateX = (noBtnPosX - 0.5) * (containerRect.width * 0.7);
+        const translateY = (noBtnPosY - 0.5) * (containerRect.height * 0.5);
+
+        noBtn.style.transform = `translate(${translateX}px, ${translateY}px)`;
+        noBtn.style.transition = "transform 0.2s ease-out";
+      });
+
+      // Yes button grow logic
+      const yesBtn = document.querySelector(".valentine-btn.yes");
+      let yesScale = 1;
+      yesBtn.addEventListener("mouseenter", () => {
+        yesScale += 0.2;
+        yesBtn.style.transform = `scale(${yesScale})`;
+      });
+      yesBtn.addEventListener("mouseleave", () => {
+        // Keep the button at the new size
+      });
+
+      // Yes button click - show appreciation modal
+      yesBtn.addEventListener("click", () => {
+        const modal = document.getElementById("appreciationModal");
+        modal.style.display = "block";
+
+        // Add heart burst effect
+        const burst = document.createElement("div");
+        burst.className = "heart";
+        burst.style.top = "50%";
+        burst.style.left = "50%";
+        burst.style.transform = "translate(-50%, -50%) scale(2) rotate(-45deg)";
+        burst.style.background = "#d72660";
+        burst.style.zIndex = 10;
+        burst.style.animation =
+          "floatHeart 1.2s forwards cubic-bezier(.4,2,.6,1)";
+        document.querySelector(".hearts").appendChild(burst);
+        setTimeout(() => burst.remove(), 1200);
+      });
+
+      // Close modal when clicking outside of it
+      window.addEventListener("click", (e) => {
+        const modal = document.getElementById("appreciationModal");
+        if (e.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
